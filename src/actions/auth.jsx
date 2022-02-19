@@ -1,5 +1,5 @@
 import Swal from "sweetalert2";
-import { fetchWidthoutToken } from "../helpers/fetch"
+import { fetchWidthoutToken, fetchWidthToken } from "../helpers/fetch"
 import { types } from "../types/types"
 
 
@@ -38,7 +38,26 @@ export const startRegister = (name, email, password) => {
                 uid: body.uid,
                 name: body.name
             }));
+
         }else {
+            Swal.fire('Error', body.msg, 'error');
+        }
+    }
+}
+
+export const startChecking = () => {
+    return async (dispatch) => {
+
+        const res = await fetchWidthToken('auth/renew');
+        const body = await res.json();
+
+        if (body.ok){
+            localStorage.setItem('token', body.token);
+            localStorage.setItem('token-init-date', new Date().get);
+
+            dispatch( renew() );
+            
+        }else{
             Swal.fire('Error', body.msg, 'error');
         }
     }
@@ -53,3 +72,5 @@ const register = ( user ) => ({
     type: types.authStartRegister,
     payload: user
 });
+
+const renew = () => ({type: types.authCheckingFinish});
