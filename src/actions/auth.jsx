@@ -55,8 +55,11 @@ export const startChecking = () => {
             localStorage.setItem('token', body.token);
             localStorage.setItem('token-init-date', new Date().get);
 
-            dispatch( renew() );
-            
+            dispatch( renew({
+                uid: body.uid,
+                name: body.name
+            }));
+
         }else{
             Swal.fire('Error', body.msg, 'error');
         }
@@ -73,4 +76,7 @@ const register = ( user ) => ({
     payload: user
 });
 
-const renew = () => ({type: types.authCheckingFinish});
+const renew = (user) => ({
+    type: types.authCheckingFinish,
+    payload: user
+});
