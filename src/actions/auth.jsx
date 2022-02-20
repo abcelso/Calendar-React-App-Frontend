@@ -61,8 +61,17 @@ export const startChecking = () => {
             }));
 
         }else{
-            Swal.fire('Error', body.msg, 'error');
+            Swal.fire('Error Checking', body.msg, 'error');
         }
+    }
+}
+
+export const startLogout = () => {
+    return (dispatch) => {
+
+        localStorage.clear();
+
+        dispatch( logout() );
     }
 }
 
@@ -80,3 +89,5 @@ const renew = (user) => ({
     type: types.authCheckingFinish,
     payload: user
 });
+
+const logout = () =>({type: types.authLogout});

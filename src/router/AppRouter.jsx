@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import {
     BrowserRouter as Router,
@@ -18,15 +18,31 @@ export const AppRouter = () => {
 
     const dispatch = useDispatch();
 
-    const {checking, uid} = useSelector(state => state.auth);
+    const {checking} = useSelector(state => state.auth);
+
+    const [tokenExist, setTokenExist] = useState("");
+
+
+    console.log(checking);
 
     useEffect(() => {
 
-        dispatch( startChecking() );
+        const eject = () => {
 
-    }, [dispatch]);
+            setTokenExist(localStorage.getItem('token'));
 
-    if (checking) {
+            if (!!tokenExist){
+                dispatch( startChecking() );
+            }
+
+        }
+
+        eject();
+
+    }, [dispatch, tokenExist]);
+
+
+    if (checking && !!tokenExist) {
         return (<h5>Espere, cargando...</h5>);
     }
 
@@ -38,14 +54,12 @@ export const AppRouter = () => {
                     exact
                     path="/login"
                     component={ LoginScreen }
-                    isAuthenticated={!!uid}
                 />
                 <Route
                     exact
                     path="/"
                     component={ CalendarScreen }
-                    isAuthenticated={!!uid}
-                    />
+                />
 
                 <Redirect to="/" />
             </Switch>

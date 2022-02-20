@@ -1,11 +1,20 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { startLogout } from '../../actions/auth';
 
 export const NavBar = () => {
+
+    const dispatch = useDispatch();
+
+    const {name} = useSelector(state => state.auth);
+
+    const handleLogout = () => dispatch( startLogout() );
+
     return (
         <nav className='navbar navbar-expand-lg navbar-dark bg-dark'>
             <div className='container-fluid'>
                 <a className='navbar-brand' href='#'>
-                    Navbar
+                    { name }
                 </a>
                 <button
                     className='navbar-toggler'
@@ -21,7 +30,7 @@ export const NavBar = () => {
                     className='collapse navbar-collapse'
                     id='navbarTogglerDemo03'>
                     <ul className='navbar-nav me-auto mb-2 mb-lg-0'>
-                        <li className='nav-item'>
+                        {/* <li className='nav-item'>
                             <a
                                 className='nav-link active'
                                 aria-current='page'
@@ -36,12 +45,14 @@ export const NavBar = () => {
                         </li>
                         <li className='nav-item'>
                             <a className='nav-link disabled'>Disabled</a>
-                        </li>
+                        </li> */}
                     </ul>
-                    <form className='d-flex'>
+                    <form className='d-flex mx-2'>
                         <button
                             className='btn btn-outline-danger'
-                            type='submit'>
+                            type='submit'
+                            onClick={ handleLogout }
+                            >
                             <i className="fas fa-sign-out-alt" aria-hidden="true"></i>
                             <span> Salir</span>
                         </button>
