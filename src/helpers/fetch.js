@@ -26,8 +26,6 @@ export const fetchWidthToken = async(endpoint, data, method = 'GET') => {
 
     const token = localStorage.getItem('token') || '';
 
-    console.log(url);
-
     if (method === 'GET') {
         return fetch(url, {
             method,

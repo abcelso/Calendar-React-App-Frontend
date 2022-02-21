@@ -5,7 +5,7 @@ import {
     Switch,
     Route,
     Redirect
-  } from "react-router-dom";
+} from "react-router-dom";
 
 import { CalendarScreen } from '../components/calendar/CalendarScreen';
 import { LoginScreen } from '../components/auth/LoginScreen';
