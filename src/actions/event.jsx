@@ -1,11 +1,9 @@
 
 import { types } from './../types/types';
 import { fetchWidthToken } from './../helpers/fetch';
+import { convertToDate } from '../helpers/convertToDate';
+import Swal from 'sweetalert2';
 
-export const eventSetActive = ( event ) => ({
-    type: types.eventSetActive,
-    payload: event
-});
 
 export const eventStartAddNew = ( event ) => {
     return async(dispatch, getState) => {
@@ -41,14 +39,63 @@ const eventAddNew = ( event ) => ({
     payload: event
 });
 
+export const startEventsLoaded = () => {
+    return async(dispatch) => {
+
+        try {
+
+            const resp = await fetchWidthToken('events');
+            const body = await resp.json();
+
+            const events = convertToDate( body.events );
+            // console.log(events);
+
+            dispatch( eventLoad(events) );
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
+
+export const eventStartUpdated = ( event ) => {
+    return async(dispatch) => {
+        try {
+            const resp = await fetchWidthToken(`events/${ event.id }`, event, 'PUT');
+            const body = await resp.json();
+
+            if (body.ok) {
+                dispatch( eventUpdated( event ) );
+            }else {
+                Swal.fire('Error', body.msg, 'error');
+            }
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
+
+const eventUpdated = ( event ) => ({
+    type: types.eventUpdated,
+    payload: event
+});
+
+const eventLoad = (events) => ({
+    type: types.eventLoaded,
+    payload: events
+})
+
+
+export const eventSetActive = ( event ) => ({
+    type: types.eventSetActive,
+    payload: event
+});
+
 export const eventClearActiveEvent = ( ) => ({
     type: types.eventClearActiveEvent
 });
 
-export const eventUpdated = ( event ) => ({
-    type: types.eventUpdated,
-    payload: event
-});
 
 export const eventDeleted = ( ) => ({
     type: types.eventDeleted

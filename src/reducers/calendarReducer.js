@@ -1,21 +1,25 @@
-import moment from "moment";
 import { types } from './../types/types';
 
 
 const initialState = {
-    events: [{
-        id: new Date().getTime(),
-        title: 'Boss Birth',
-        start: moment().toDate(),
-        end: moment().add(2, 'hours').toDate(),
-        notes: 'Buy cake',
-        user: {
-            _id: '1234',
-            name: 'Alejandro',
-        },
-    }],
+    events: [],
     activeEvent: null
 }
+
+// const initialState = {
+//     events: [{
+//         id: new Date().getTime(),
+//         title: 'Boss Birth',
+//         start: moment().toDate(),
+//         end: moment().add(2, 'hours').toDate(),
+//         notes: 'Buy cake',
+//         user: {
+//             _id: '1234',
+//             name: 'Alejandro',
+//         },
+//     }],
+//     activeEvent: null
+// }
 
 export const calendarReducer = (state=initialState, action) => {
 
@@ -55,6 +59,12 @@ export const calendarReducer = (state=initialState, action) => {
                         e => ( e.id !== state.activeEvent.id )
                     ),
                     activeEvent: null
+                }
+
+            case types.eventLoaded:
+                return {
+                    ...state,
+                    events: [ ...action.payload ]
                 }
 
         default:

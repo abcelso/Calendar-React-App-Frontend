@@ -20,31 +20,17 @@ export const AppRouter = () => {
 
     const {checking} = useSelector(state => state.auth);
 
-    const [tokenExist, setTokenExist] = useState("");
-
-
-    console.log(checking);
+    console.log('check',checking);
 
     useEffect(() => {
 
-        const eject = () => {
+            dispatch( startChecking() );
 
-            setTokenExist(localStorage.getItem('token'));
+    }, [dispatch]);
 
-            if (!!tokenExist){
-                dispatch( startChecking() );
-            }
-
-        }
-
-        eject();
-
-    }, [dispatch, tokenExist]);
-
-
-    if (checking && !!tokenExist) {
-        return (<h5>Espere, cargando...</h5>);
-    }
+    // if (!checking) {
+    //     return (<h5>Espere, cargando...</h5>);
+    // }
 
     return (
         <Router>

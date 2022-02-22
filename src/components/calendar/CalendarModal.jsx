@@ -10,7 +10,7 @@ import 'react-clock/dist/Clock.css';
 import Swal from 'sweetalert2';
 import { useSelector, useDispatch } from 'react-redux';
 import { uiCloseModal } from '../../actions/ui';
-import { eventClearActiveEvent, eventStartAddNew, eventUpdated } from '../../actions/event';
+import { eventClearActiveEvent, eventStartAddNew, eventStartUpdated } from '../../actions/event';
 
 
 const customStyles = {
@@ -103,7 +103,7 @@ export const CalendarModal = () => {
         }
 
         if (activeEvent){
-            dispatch( eventUpdated( formValues ) );
+            dispatch( eventStartUpdated( formValues ) );
         }else {
             dispatch( eventStartAddNew(formValues));
         }

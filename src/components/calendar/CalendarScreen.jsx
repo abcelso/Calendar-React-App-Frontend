@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavBar } from '../ui/NavBar';
 
 import { Calendar, momentLocalizer } from 'react-big-calendar';
@@ -13,7 +13,7 @@ import { CalendarEvent } from './CalendarEvent';
 import { CalendarModal } from './CalendarModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { uiOpenModal } from '../../actions/ui';
-import { eventSetActive } from '../../actions/event';
+import { eventSetActive, startEventsLoaded } from '../../actions/event';
 import { FabButton } from './../ui/FabButton';
 import { DeleteFab } from '../ui/DeleteFab';
 
@@ -35,23 +35,17 @@ const localizer = momentLocalizer(moment);
 //     },
 // ];
 
-// Muestra los eventos
-const eventStyleGetter = (event, start, end, isSelected) => {
-    // Estilo del evento
-    const style = {
-        backgroundColor: '#367CF7',
-        borderRadius: '0px',
-        opacity: 0.8,
-        display: 'block',
-        color: 'white',
-    };
 
-    return {
-        style,
-    };
-};
 
 export const CalendarScreen = () => {
+
+    const { uid } = useSelector(state => state.auth);
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch( startEventsLoaded() );
+    }, [dispatch]);
 
     const lastV = localStorage.getItem('lastView') || 'month';
 
@@ -59,10 +53,7 @@ export const CalendarScreen = () => {
 
     const {events, activeEvent} = useSelector(state => state.calendar);
 
-    console.log(events);
-
-    const dispatch = useDispatch();
-
+    // console.log(events);
 
     const onDoubleClick = (e) => {
         // console.log(e);
@@ -78,6 +69,24 @@ export const CalendarScreen = () => {
         setLastView(e);
         localStorage.setItem('lastView', e);
     };
+
+    // Muestra los eventos
+const eventStyleGetter = (event, start, end, isSelected) => {
+
+    console.log(event);
+    // Estilo del evento
+    const style = {
+        backgroundColor: (event.user._id === uid) ? '#367CF7' : '#88919f',
+        borderRadius: '0px',
+        opacity: 0.8,
+        display: 'block',
+        color: 'white',
+    };
+
+    return {
+        style,
+    };
+};
 
     return (
         <div>
